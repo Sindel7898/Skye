@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.SceneViewExtensionTemplate.cpp.obj": [
+			"SceneViewExtensionTemplate.init.gen.cpp.obj",
+			"TemplateSubsystem.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"CustomSceneViewExtension.cpp.obj",
+			"SceneViewExtensionTemplate.cpp.obj",
+			"TemplateSubsystem.cpp.obj"
+		]
+	}
+}

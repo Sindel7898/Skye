@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-SceneViewExtensionTemplate.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:/TestBed/Intermediate/Build/Win64/x64/TestBedEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.obj"
+"D:/TestBed/Plugins/SceneViewExtensionTemplate/SceneViewExtensionTemplate/Intermediate/Build/Win64/x64/UnrealEditor/Development/SceneViewExtensionTemplate/Module.SceneViewExtensionTemplate.cpp.obj"
+"D:/TestBed/Plugins/SceneViewExtensionTemplate/SceneViewExtensionTemplate/Intermediate/Build/Win64/x64/UnrealEditor/Development/SceneViewExtensionTemplate/CustomSceneViewExtension.cpp.obj"
+"D:/TestBed/Plugins/SceneViewExtensionTemplate/SceneViewExtensionTemplate/Intermediate/Build/Win64/x64/UnrealEditor/Development/SceneViewExtensionTemplate/SceneViewExtensionTemplate.cpp.obj"
+"D:/TestBed/Plugins/SceneViewExtensionTemplate/SceneViewExtensionTemplate/Intermediate/Build/Win64/x64/UnrealEditor/Development/SceneViewExtensionTemplate/TemplateSubsystem.cpp.obj"
+"D:/TestBed/Plugins/SceneViewExtensionTemplate/SceneViewExtensionTemplate/Intermediate/Build/Win64/x64/UnrealEditor/Development/SceneViewExtensionTemplate/Default.rc2.res"
+/OUT:"D:/TestBed/Plugins/SceneViewExtensionTemplate/SceneViewExtensionTemplate/Intermediate/Build/Win64/x64/UnrealEditor/Development/SceneViewExtensionTemplate/UnrealEditor-SceneViewExtensionTemplate.lib"
