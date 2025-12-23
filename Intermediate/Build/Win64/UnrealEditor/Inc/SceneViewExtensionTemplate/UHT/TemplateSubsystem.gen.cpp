@@ -56,7 +56,7 @@ struct Z_Construct_UClass_UTemplateSubsystem_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
 		{ "IncludePath", "TemplateSubsystem.h" },
-		{ "ModuleRelativePath", "Private/TemplateSubsystem.h" },
+		{ "ModuleRelativePath", "Public/TemplateSubsystem.h" },
 	};
 #endif // WITH_METADATA
 	static UObject* (*const DependentSingletons[])();
@@ -99,14 +99,14 @@ UTemplateSubsystem::~UTemplateSubsystem() {}
 // ********** End Class UTemplateSubsystem *********************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_Statics
+struct Z_CompiledInDeferFile_FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UTemplateSubsystem, UTemplateSubsystem::StaticClass, TEXT("UTemplateSubsystem"), &Z_Registration_Info_UClass_UTemplateSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTemplateSubsystem), 4204323209U) },
+		{ Z_Construct_UClass_UTemplateSubsystem, UTemplateSubsystem::StaticClass, TEXT("UTemplateSubsystem"), &Z_Registration_Info_UClass_UTemplateSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTemplateSubsystem), 3820699660U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_3638280068(TEXT("/Script/SceneViewExtensionTemplate"),
-	Z_CompiledInDeferFile_FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_2895156059(TEXT("/Script/SceneViewExtensionTemplate"),
+	Z_CompiledInDeferFile_FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h__Script_SceneViewExtensionTemplate_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

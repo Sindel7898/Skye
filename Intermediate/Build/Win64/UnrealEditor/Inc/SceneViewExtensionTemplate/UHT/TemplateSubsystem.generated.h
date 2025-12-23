@@ -19,7 +19,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 // ********** Begin Class UTemplateSubsystem *******************************************************
 SCENEVIEWEXTENSIONTEMPLATE_API UClass* Z_Construct_UClass_UTemplateSubsystem_NoRegister();
 
-#define FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h_15_INCLASS_NO_PURE_DECLS \
+#define FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h_15_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUTemplateSubsystem(); \
 	friend struct Z_Construct_UClass_UTemplateSubsystem_Statics; \
@@ -30,7 +30,7 @@ public: \
 	DECLARE_SERIALIZER(UTemplateSubsystem)
 
 
-#define FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h_15_ENHANCED_CONSTRUCTORS \
+#define FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h_15_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UTemplateSubsystem(); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -42,12 +42,12 @@ public: \
 	NO_API virtual ~UTemplateSubsystem();
 
 
-#define FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h_12_PROLOG
-#define FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h_15_GENERATED_BODY \
+#define FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h_12_PROLOG
+#define FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h_15_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h_15_INCLASS_NO_PURE_DECLS \
-	FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h_15_ENHANCED_CONSTRUCTORS \
+	FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h_15_INCLASS_NO_PURE_DECLS \
+	FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h_15_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -57,6 +57,6 @@ class UTemplateSubsystem;
 // ********** End Class UTemplateSubsystem *********************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_TestBed_Plugins_SceneViewExtensionTemplate_SceneViewExtensionTemplate_Source_SceneViewExtensionTemplate_Private_TemplateSubsystem_h
+#define CURRENT_FILE_ID FID_Unreal_Plugin_Skye_Source_Public_TemplateSubsystem_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

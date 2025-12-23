@@ -5,6 +5,7 @@
 
 #include "CustomSceneViewExtension.h"
 
+//Reference to specific shader file and entry point
 IMPLEMENT_GLOBAL_SHADER(FCustomShader, "/Plugins/SceneViewExtensionTemplate/PostProcessCS.usf", "MainCS", SF_Compute);
 
 namespace

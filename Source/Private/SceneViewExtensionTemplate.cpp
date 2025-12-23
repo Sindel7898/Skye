@@ -9,13 +9,14 @@
 
 void FSceneViewExtensionTemplate::StartupModule()
 {
-	// Set up the Shader Directories
+	// Set up the Shaders Directories
 	FString PluginShaderDir = FPaths::Combine(IPluginManager::Get().FindPlugin(TEXT("SceneViewExtensionTemplate"))->GetBaseDir(), TEXT("Shaders"));
 	AddShaderSourceDirectoryMapping(TEXT("/Plugins/SceneViewExtensionTemplate"), PluginShaderDir);
 }
 
 void FSceneViewExtensionTemplate::ShutdownModule()
 {
+
 }
 
 #undef LOCTEXT_NAMESPACE
