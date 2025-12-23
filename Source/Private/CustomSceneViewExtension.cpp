@@ -5,12 +5,16 @@
 
 #include "CustomSceneViewExtension.h"
 
+#include <functional>
+
+#include "Engine/VolumeTexture.h"
 //Reference to specific shader file and entry point
 IMPLEMENT_GLOBAL_SHADER(FCustomShader, "/Plugins/SceneViewExtensionTemplate/PostProcessCS.usf", "MainCS", SF_Compute);
 
+//Console Commands
 namespace
 {
-	TAutoConsoleVariable<int32> CVarShaderOn(
+	TAutoConsoleVariable<int32> ConsoleVariable(
 		TEXT("r.SceneViewExtensionTemplate"),
 		0,
 		TEXT("Enable Custom SceneViewExtension \n")
@@ -42,7 +46,8 @@ FScreenPassTexture FCustomSceneViewExtension::CustomPostProcessing(FRDGBuilder& 
 
 	const FScreenPassTexture& SceneColor = FScreenPassTexture::CopyFromSlice(GraphBuilder, Inputs.GetInput(EPostProcessMaterialInput::SceneColor));
 
-	if (!SceneColor.IsValid() || CVarShaderOn.GetValueOnRenderThread() == 0)
+	// Check if we have valid input and if the effect is enabled
+	if (!SceneColor.IsValid() || ConsoleVariable.GetValueOnRenderThread() == 0)
 	{
 		return SceneColor;
 	}
@@ -62,41 +67,59 @@ FScreenPassTexture FCustomSceneViewExtension::CustomPostProcessing(FRDGBuilder& 
 			OutputDesc = SceneColor.Texture->Desc;
 
 			OutputDesc.Reset();
-			OutputDesc.Flags |= TexCreate_UAV;
+			OutputDesc.Flags |= TexCreate_UAV; //we need UAV (unordered access view) for compute shader output
+
+			// We don't need Raster RenderTargetable or FastVRAM for this effect
 			OutputDesc.Flags &= ~(TexCreate_RenderTargetable | TexCreate_FastVRAM);
 
-			FLinearColor ClearColor(0., 0., 0., 0.);
-			OutputDesc.ClearValue = FClearValueBinding(ClearColor);
+			OutputDesc.ClearValue = FClearValueBinding(FLinearColor::Black);
 		}
 
 		// Create target texture
 		FRDGTextureRef OutputTexture = GraphBuilder.CreateTexture(OutputDesc, TEXT("Custom Effect Output Texture"));
-
-		// Set the shader parameters
-		FCustomShader::FParameters* PassParameters = GraphBuilder.AllocParameters<FCustomShader::FParameters>();
-
-		// Input is the SceneColor from PostProcess Material Inputs
-		PassParameters->OriginalSceneColor = SceneColor.Texture;
-
-		// Use ScreenPassTextureViewportParameters so we don't need to calculate these ourselves
-		PassParameters->SceneColorViewport = GetScreenPassTextureViewportParameters(SceneColorViewport);
-
-		FIntPoint PassViewSize = SceneColor.ViewRect.Size();
 		
-		// Create UAV from Target Texture
-		PassParameters->Output = GraphBuilder.CreateUAV(FRDGTextureUAVDesc(OutputTexture));
+		FIntPoint PassViewSize = SceneColor.ViewRect.Size();
 
-		// Set Compute Shader and execute
+		// Calculate group count based on view size and thread group size defined in the shader
 		FIntVector GroupCount = FComputeShaderUtils::GetGroupCount(PassViewSize, FComputeShaderUtils::kGolden2DGroupSize);
 
-		TShaderMapRef<FCustomShader> ComputeShader(GlobalShaderMap);
+		
+		
+		FScopeLock Lock(&RenderDataLock); 
 
-		FComputeShaderUtils::AddPass(
-			GraphBuilder,
-			RDG_EVENT_NAME("Custom SceneViewExtension Post Processing CS Shader %dx%d", PassViewSize.X, PassViewSize.Y),
-			ComputeShader,
-			PassParameters,
-			GroupCount);
+		for (const FCloudInstanceData& Cloud : CloudData)
+		{
+			if (!Cloud.VolumeTexture) continue;
+
+			auto* PassParameters = GraphBuilder.AllocParameters<FCustomShader::FParameters>();
+			PassParameters->SceneColorViewport = GetScreenPassTextureViewportParameters(SceneColorViewport);
+			PassParameters->OriginalSceneColor = SceneColor.Texture;
+			PassParameters->Output = GraphBuilder.CreateUAV(FRDGTextureUAVDesc(OutputTexture));
+    
+			FTextureResource* Resource = Cloud.VolumeTexture->GetResource();
+
+			if (Resource && Resource->TextureRHI)
+			{
+				FRHITexture* TextureRHI = Resource->TextureRHI;
+
+				FRDGTextureRef VolTex = GraphBuilder.RegisterExternalTexture(
+					CreateRenderTarget(TextureRHI, TEXT("CloudVolume"))
+				);
+
+				PassParameters->CurrentVolumeTexture = VolTex;
+			}
+			
+			PassParameters->CurrentCloudPosition = (FVector4f)Cloud.ArithmeticData.Position; 
+
+			TShaderMapRef<FCustomShader> ComputeShader(GlobalShaderMap);
+			FComputeShaderUtils::AddPass(
+				GraphBuilder,
+				RDG_EVENT_NAME("Render Cloud Instance"),
+				ComputeShader,
+				PassParameters,
+				GroupCount
+			);
+		}
 
 		// Copy the output texture back to SceneColor
 		// Returning the new texture as ScreenPassTexture doesn't work, so this is pretty fast alternative
@@ -106,4 +129,31 @@ FScreenPassTexture FCustomSceneViewExtension::CustomPostProcessing(FRDGBuilder& 
 
 	// The call expects ScreenPassTexture as a return, we return with the same texture as we started with, see AddCopyTexturePass above 
 	return SceneColor;
+}
+
+
+void FCustomSceneViewExtension::BeginRenderViewFamily(FSceneViewFamily& InViewFamily)
+{
+	CloudData.Reset();
+	
+	const UWorld* World = InViewFamily.Scene->GetWorld();
+	
+	if (!World) {return;};
+	
+	for (TObjectIterator<USkyeComponent> Component; Component; ++Component)
+	{
+		// Verify this component belongs to the world we are rendering
+		if (Component && Component->GetWorld() == World && Component->IsVisible())
+		{
+			
+			if (Component->VolumeTexture && Component->VolumeTexture->GetResource())
+			{
+				FCloudInstanceData Data;
+                Data.ArithmeticData.Position = FVector4f(FVector3f(Component->GetComponentLocation()), 1.0f);
+				Data.VolumeTexture = Component->VolumeTexture;
+				
+				CloudData.Add(Data);
+			}
+		}
+	}
 }

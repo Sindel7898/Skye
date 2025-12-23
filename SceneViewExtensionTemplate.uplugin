@@ -10,7 +10,7 @@
 		{
 			"Name": "SceneViewExtensionTemplate",
 			"Type": "Runtime",
-			"LoadingPhase": "PostConfigInit",
+			"LoadingPhase": "Default",
 			"PlatformAllowList": [
 				"Win64"
 			]

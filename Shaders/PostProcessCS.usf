@@ -9,14 +9,53 @@
 
 // Shader parameters
 
-// SceneColor texture
 Texture2D OriginalSceneColor;
-
-// SceneColor Viewport parameters
+Texture3D CurrentVolumeTexture; 
+float4 CurrentCloudPosition;    
 SCREEN_PASS_TEXTURE_VIEWPORT(SceneColorViewport)
-
-// Output
 RWTexture2D<float4> Output;
+
+struct FRayHit
+{
+	float3 Position;
+	float3  Distance;
+	bool   Hit;
+};
+
+
+FRayHit  RayMarch(float3 Ray_Origin, float3 Ray_Direction) {
+	 
+	//Settings
+	int MaxSteps = 50;
+	int DistanceTraveled = 0;
+	
+	//Initial Ray data
+	FRayHit Ray;
+	Ray.Position = Ray_Origin;
+	Ray.Distance = Ray_Direction;
+	Ray.Hit = false;
+	
+	for(int i = 0; i < MaxSteps; i++) {
+		
+		float DistToScene = 1.0 / MaxSteps;
+		
+		if (DistToScene < 0.1)
+		{
+			Ray.Hit = true;
+			return Ray;
+		}
+		
+		float StepSize = max(DistToScene, 1.0);
+		
+		DistanceTraveled += StepSize;
+		Ray.Position += Ray.Distance * StepSize;
+		
+		if (DistanceTraveled >  MaxSteps){ break;}
+	}
+    
+	return Ray; 
+}
+
 
 // Compute Shader code
 [numthreads(THREADS_X, THREADS_Y, THREADS_Z)]
@@ -34,8 +73,21 @@ void MainCS(uint2 DispatchThreadId : SV_DispatchThreadID)
     // sample OriginalColor
     float4 OriginalColor = OriginalSceneColor.SampleLevel(GlobalPointClampedSampler, sampleUV, 0);
 
-    // To test that everything is working, switch Red and Blue
-    float4 OutputColor = float4(OriginalColor.z, OriginalColor.y, OriginalColor.x, OriginalColor.w);
+	float3  CameraLocation = float3(0,0,0);	
+	float3  RayDirection   = float3(0,-1,0);	
+	
+    FRayHit Ray_Info  = RayMarch(CameraLocation, RayDirection);
+	
+	float4 OutputColor;
+	
+	if (Ray_Info.Hit)
+	{
+		 OutputColor = float4(0, 0, 0, 1);
+	}
+	else
+	{
+		 OutputColor = float4(1, 1, 1, 1);
+	}
 
     // Write output
     Output[SceneColorViewport_ViewportMin + DispatchThreadId] = OutputColor;
